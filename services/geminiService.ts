@@ -108,13 +108,12 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
   }
 
   // Initialize client with the retrieved key and CUSTOM BASE URL for proxy support
+  // CRITICAL: baseUrl must be at the root level. Casting to 'any' to prevent TS errors if types are strict.
   const ai = new GoogleGenAI({ 
     apiKey: apiKey,
-    requestOptions: {
-      baseUrl: 'https://kickoff.netlib.re',
-    },
+    baseUrl: 'https://kickoff.netlib.re',
     apiVersion: 'v1beta'
-  });
+  } as any);
 
   try {
     // Step 1: Search Tavily for context
@@ -177,9 +176,8 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
     console.error("Error analyzing event:", error);
     
     // Check for specific 401/403 errors related to "API keys are not supported"
-    // This usually means the "Generative Language API" is not enabled in the Google Cloud Project
-    if (error.message && (error.message.includes("401") || error.message.includes("403")) && (error.message.includes("API key") || error.message.includes("supported"))) {
-       throw new Error(`Google Cloud 权限错误：当前 API Key 对应的项目未开启 "Generative Language API" 或模型不可用。\n如果使用中转服务，请检查中转站配置及模型权限。`);
+    if (error.message && (error.message.includes("401") || error.message.includes("403"))) {
+       throw new Error(`API 权限验证失败。请检查您的中转 Key 是否正确，或 Key 对应的权限是否包含 Generative Language API。`);
     }
 
     throw error;
