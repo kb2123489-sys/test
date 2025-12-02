@@ -93,7 +93,7 @@ const parseResponse = (text: string): { title: string; summary: string; impacts:
 };
 
 export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
-  // 使用最新的 gemini-3-pro-preview 模型，能力更强，信息更新
+  // 使用 gemini-3-pro-preview 模型
   const modelId = "gemini-3-pro-preview"; 
   
   // Sync keys immediately before use
@@ -107,8 +107,14 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
     throw new Error("未配置 Gemini API Key。请在 Cloudflare 环境变量中配置 VITE_GEMINI_API_KEY，或在控制台使用 localStorage.setItem('VITE_GEMINI_API_KEY', 'key') 注入。");
   }
 
-  // Initialize client with the retrieved key
-  const ai = new GoogleGenAI({ apiKey: apiKey });
+  // Initialize client with the retrieved key and CUSTOM BASE URL for proxy support
+  // Cast to any to bypass strict type check for custom requestOptions/baseUrl if types are missing
+  const ai = new GoogleGenAI({ 
+    apiKey: apiKey,
+    requestOptions: {
+      baseUrl: 'https://kickoff.netlib.re'
+    }
+  } as any);
 
   try {
     // Step 1: Search Tavily for context
