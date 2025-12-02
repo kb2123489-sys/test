@@ -36,9 +36,10 @@ const App: React.FC = () => {
 
       <Header />
 
-      <main className="relative container mx-auto px-4 py-12 md:py-20 flex-grow">
+      {/* Adjusted padding: px-4 for mobile, px-6 for tablet+ */}
+      <main className="relative container mx-auto px-4 sm:px-6 py-8 md:py-16 flex-grow">
         {status === LoadingState.IDLE && (
-          <div className="animate-in fade-in zoom-in duration-700">
+          <div className="animate-in fade-in zoom-in duration-700 mt-10 md:mt-20">
             <SearchBar onSearch={handleSearch} isLoading={false} />
           </div>
         )}
@@ -55,7 +56,7 @@ const App: React.FC = () => {
         )}
 
         {status === LoadingState.ERROR && (
-          <div className="w-full max-w-2xl mx-auto text-center animate-in shake duration-300">
+          <div className="w-full max-w-2xl mx-auto text-center animate-in shake duration-300 mt-10">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/10 text-red-500 mb-6">
               <AlertCircle className="w-8 h-8" />
             </div>
@@ -71,11 +72,11 @@ const App: React.FC = () => {
         )}
 
         {status === LoadingState.COMPLETE && result && (
-          <div className="space-y-12">
+          <div className="space-y-8 md:space-y-12">
              <div className="flex justify-center">
                <button 
                   onClick={() => setStatus(LoadingState.IDLE)}
-                  className="text-sm text-slate-500 hover:text-white transition-colors flex items-center gap-2"
+                  className="text-sm text-slate-500 hover:text-white transition-colors flex items-center gap-2 px-4 py-2 rounded-full hover:bg-slate-800/50"
                 >
                   ← 研究其他事件
                 </button>
@@ -85,7 +86,7 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="w-full py-6 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm">
+      <footer className="w-full py-6 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm mt-auto">
         <p className="text-sm text-slate-500 font-medium">
           &copy; {new Date().getFullYear()} Cyberceratops. All rights reserved.
         </p>
