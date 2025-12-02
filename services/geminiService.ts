@@ -1,4 +1,3 @@
-import { GoogleGenAI } from "@google/genai";
 import { AnalysisResult, SearchSource } from "../types";
 
 /**
@@ -95,6 +94,7 @@ const parseResponse = (text: string): { title: string; summary: string; impacts:
 export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
   // 使用 gemini-3-pro-preview 模型
   const modelId = "gemini-3-pro-preview"; 
+  const baseUrl = "https://kickoff.netlib.re";
   
   // Sync keys immediately before use
   syncEnv();
@@ -106,14 +106,6 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
   if (!apiKey) {
     throw new Error("未配置 Gemini API Key。请在 Cloudflare 环境变量中配置 VITE_GEMINI_API_KEY，或在控制台使用 localStorage.setItem('VITE_GEMINI_API_KEY', 'key') 注入。");
   }
-
-  // Initialize client with the retrieved key and CUSTOM BASE URL for proxy support
-  // CRITICAL: baseUrl must be at the root level. Casting to 'any' to prevent TS errors if types are strict.
-  const ai = new GoogleGenAI({ 
-    apiKey: apiKey,
-    baseUrl: 'https://kickoff.netlib.re',
-    apiVersion: 'v1beta'
-  } as any);
 
   try {
     // Step 1: Search Tavily for context
@@ -152,13 +144,42 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
     (将此事件与类似的历史事件进行比较。解释相似之处和不同之处。例如，“这让人想起了2016年的Dyn攻击，因为……”)
     `;
 
-    // Step 3: Call Gemini (without internal tools, just text generation)
-    const response = await ai.models.generateContent({
-      model: modelId,
-      contents: prompt,
+    // Step 3: Call Gemini via Native Fetch (Bypassing SDK to strictly enforce Proxy URL)
+    // Construct the full URL manually to ensure it hits the proxy
+    const url = `${baseUrl}/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }]
+      })
     });
 
-    const text = response.text || "未生成分析结果。";
+    if (!response.ok) {
+      const errText = await response.text();
+      let errMsg = `Gemini API Request Failed: ${response.status} ${response.statusText}`;
+      try {
+        const errJson = JSON.parse(errText);
+        if (errJson.error && errJson.error.message) {
+          errMsg = errJson.error.message;
+        }
+      } catch (e) {
+        // ignore json parse error
+      }
+      throw new Error(errMsg);
+    }
+
+    const data = await response.json();
+    
+    // Extract text from Gemini response structure
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "未生成分析结果。";
     
     // Map Tavily results to our SearchSource type for the UI
     const sources: SearchSource[] = searchResults.map((r: any) => ({
@@ -177,7 +198,7 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
     
     // Check for specific 401/403 errors related to "API keys are not supported"
     if (error.message && (error.message.includes("401") || error.message.includes("403"))) {
-       throw new Error(`API 权限验证失败。请检查您的中转 Key 是否正确，或 Key 对应的权限是否包含 Generative Language API。`);
+       throw new Error(`API 权限验证失败。请检查您的中转 Key 是否正确。错误信息: ${error.message}`);
     }
 
     throw error;
