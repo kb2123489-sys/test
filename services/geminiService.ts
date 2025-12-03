@@ -145,13 +145,14 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
     `;
 
     // Step 3: Call Gemini via Native Fetch (Bypassing SDK to strictly enforce Proxy URL)
-    // Construct the full URL manually to ensure it hits the proxy
-    const url = `${baseUrl}/v1beta/models/${modelId}:generateContent?key=${apiKey}`;
+    // Security update: Pass API Key via Header instead of URL parameter
+    const url = `${baseUrl}/v1beta/models/${modelId}:generateContent`;
     
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey // Pass key in header for better security (avoids URL logging)
       },
       body: JSON.stringify({
         contents: [{
