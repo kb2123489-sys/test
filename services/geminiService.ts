@@ -1,69 +1,9 @@
-import { AnalysisResult, SearchSource } from "../types";
+
+import { AnalysisResult } from "../types";
 
 /**
- * HELPER: Syncs environment variables from Vite env and localStorage to process.env.
- * This ensures that keys injected via console (localStorage) AFTER page load are picked up immediately.
- */
-const syncEnv = () => {
-  // 1. Explicitly access Vite env vars so build tool replaces them
-  const viteGemini = import.meta.env.VITE_GEMINI_API_KEY;
-  const viteTavily = import.meta.env.VITE_TAVILY_API_KEY;
-
-  // 2. Access LocalStorage (Developer Override)
-  const lsGemini = typeof window !== 'undefined' ? localStorage.getItem('VITE_GEMINI_API_KEY') : null;
-  const lsTavily = typeof window !== 'undefined' ? localStorage.getItem('VITE_TAVILY_API_KEY') : null;
-
-  // 3. Update process.env (Polyfill)
-  // Ensure global process object exists via window to bypass Vite replacement
-  if (!(window as any).process) {
-    (window as any).process = { env: {} };
-  } else if (!(window as any).process.env) {
-    (window as any).process.env = {};
-  }
-
-  // Priority: LocalStorage > Vite Env
-  // Using (window as any).process ensures we are writing to the runtime object, not a build-time replacement stub
-  (window as any).process.env.API_KEY = lsGemini || viteGemini || '';
-  (window as any).process.env.VITE_TAVILY_API_KEY = lsTavily || viteTavily || '';
-};
-
-/**
- * Perform a search using Tavily API
- */
-const searchTavily = async (query: string): Promise<{ results: any[] }> => {
-  // Sync keys immediately before use
-  syncEnv();
-
-  // Access via window to bypass Vite replacement
-  const apiKey = (window as any).process.env.VITE_TAVILY_API_KEY;
-
-  if (!apiKey) {
-    throw new Error("未配置 Tavily API Key。请在 Cloudflare 环境变量中配置 VITE_TAVILY_API_KEY，或在控制台使用 localStorage.setItem('VITE_TAVILY_API_KEY', 'key') 注入。");
-  }
-
-  const response = await fetch("https://api.tavily.com/search", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      api_key: apiKey,
-      query: query,
-      search_depth: "basic",
-      include_answer: false,
-      max_results: 6, 
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Tavily Search failed: ${response.statusText}`);
-  }
-
-  return response.json();
-};
-
-/**
- * Parses the structured text response from Gemini into a usable object.
+ * Parses the structured text response into a usable object.
+ * This logic remains on the client side to reduce server load/complexity.
  */
 const parseResponse = (text: string): { title: string; summary: string; impacts: string[]; historicalContext: string } => {
   const sections = {
@@ -92,121 +32,35 @@ const parseResponse = (text: string): { title: string; summary: string; impacts:
 };
 
 export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
-  // 使用 gemini-3-pro-preview 模型
-  const modelId = "gemini-3-pro-preview"; 
-  const baseUrl = "https://0rzz.ggff.net";
-  
-  // Sync keys immediately before use
-  syncEnv();
-
-  // Pre-check for API Key
-  // Access via window to bypass Vite replacement
-  const apiKey = (window as any).process.env.API_KEY;
-
-  if (!apiKey) {
-    throw new Error("未配置 Gemini API Key。请在 Cloudflare 环境变量中配置 VITE_GEMINI_API_KEY，或在控制台使用 localStorage.setItem('VITE_GEMINI_API_KEY', 'key') 注入。");
-  }
-
   try {
-    // Step 1: Search Tavily for context
-    const searchResponse = await searchTavily(query);
-    const searchResults = searchResponse.results || [];
-
-    // Format search results for the prompt
-    const contextString = searchResults.map((r: any, index: number) => 
-      `Source ${index + 1}:\nTitle: ${r.title}\nURL: ${r.url}\nContent: ${r.content}`
-    ).join("\n\n");
-
-    // Step 2: Construct the Prompt with Context
-    const prompt = `
-    你是一位资深的科技记者和历史学家。
-    
-    任务：基于提供的【参考资料】，研究并分析用户的查询："${query}"。
-    如果查询比较宽泛，请聚焦于资料中最重大的事件。
-    
-    【参考资料】：
-    ${contextString}
-    
-    【输出要求】：
-    你必须严格遵循以下文本格式，使用确切的英文标签（如 [TITLE]）。不要在标签前加 Markdown 标题符号 (#)。
-    **所有生成的内容必须使用简体中文。**
-    
-    [TITLE] 
-    (简短有力的事件标题)
-    
-    [SUMMARY] 
-    (简洁、引人入胜的事件摘要。最多3句话。)
-    
-    [IMPACT] 
-    (列出3-4个主要后果或影响。使用无序列表。)
-    
-    [HISTORY] 
-    (将此事件与类似的历史事件进行比较。解释相似之处和不同之处。例如，“这让人想起了2016年的Dyn攻击，因为……”)
-    `;
-
-    // Step 3: Call Gemini via OpenAI Compatible Endpoint (New API / One API)
-    // This uses the standard /v1/chat/completions endpoint which is safer and more stable for proxies
-    const url = `${baseUrl}/v1/chat/completions`;
-    
-    const response = await fetch(url, {
-      method: 'POST',
+    // Send the query to our own Cloudflare Function backend.
+    // No API keys are required here.
+    const response = await fetch("/api/analyze", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        // Standard OpenAI security: Bearer Token. 
-        // This keeps the key out of the URL and is compatible with 'sk-' keys.
-        'Authorization': `Bearer ${apiKey}` 
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: modelId,
-        messages: [
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        stream: false
-      })
+      body: JSON.stringify({ query }),
     });
 
     if (!response.ok) {
-      const errText = await response.text();
-      let errMsg = `API Request Failed: ${response.status} ${response.statusText}`;
-      try {
-        const errJson = JSON.parse(errText);
-        if (errJson.error && errJson.error.message) {
-          errMsg = errJson.error.message;
-        }
-      } catch (e) {
-        // ignore json parse error
-      }
-      throw new Error(errMsg);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Request failed with status ${response.status}`);
     }
 
     const data = await response.json();
     
-    // Extract text from OpenAI response structure: choices[0].message.content
-    const text = data.choices?.[0]?.message?.content || "未生成分析结果。";
-    
-    // Map Tavily results to our SearchSource type for the UI
-    const sources: SearchSource[] = searchResults.map((r: any) => ({
-      uri: r.url,
-      title: r.title
-    }));
+    // Client-side parsing of the result
+    const parsedData = parseResponse(data.rawText);
 
     return {
-      rawText: text,
-      parsed: parseResponse(text),
-      sources: sources,
+      rawText: data.rawText,
+      parsed: parsedData,
+      sources: data.sources || [],
     };
 
   } catch (error: any) {
     console.error("Error analyzing event:", error);
-    
-    // Provide better error messages for common proxy issues
-    if (error.message && (error.message.includes("401") || error.message.includes("403"))) {
-       throw new Error(`权限验证失败。请检查您的 API Key 是否正确。(${error.message})`);
-    }
-
     throw error;
   }
 };
