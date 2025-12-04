@@ -1,11 +1,9 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './index.css';
 
-// NOTE: With the Cloudflare Functions architecture, we no longer need 
-// to polyfill process.env or inject keys into the browser.
-// The frontend is now strictly a UI layer.
+// The frontend is now strictly a UI layer served by the Cloudflare Worker.
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
