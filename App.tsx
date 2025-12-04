@@ -1,23 +1,26 @@
+
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { SearchBar } from './components/SearchBar';
 import { ResultView } from './components/ResultView';
 import { analyzeEvent } from './services/geminiService';
-import { AnalysisResult, LoadingState } from './types';
-import { AlertCircle } from 'lucide-react';
+import { AnalysisResult, LoadingState, AnalysisMode } from './types';
+import { AlertCircle, Zap } from 'lucide-react';
 
 const App: React.FC = () => {
   const [status, setStatus] = useState<LoadingState>(LoadingState.IDLE);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [errorMsg, setErrorMsg] = useState<string>('');
+  const [currentMode, setCurrentMode] = useState<AnalysisMode>('deep');
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string, mode: AnalysisMode) => {
     setStatus(LoadingState.SEARCHING);
     setErrorMsg('');
     setResult(null);
+    setCurrentMode(mode);
 
     try {
-      const data = await analyzeEvent(query);
+      const data = await analyzeEvent(query, mode);
       setResult(data);
       setStatus(LoadingState.COMPLETE);
     } catch (err) {
@@ -36,7 +39,6 @@ const App: React.FC = () => {
 
       <Header />
 
-      {/* Adjusted padding: px-4 for mobile, px-6 for tablet+ */}
       <main className="relative container mx-auto px-4 sm:px-6 py-8 md:py-16 flex-grow">
         {status === LoadingState.IDLE && (
           <div className="animate-in fade-in zoom-in duration-700 mt-10 md:mt-20">
@@ -47,10 +49,12 @@ const App: React.FC = () => {
         {status === LoadingState.SEARCHING && (
           <div className="w-full max-w-3xl mx-auto text-center py-20 space-y-6 animate-in fade-in duration-500">
             <div className="relative mx-auto w-24 h-24">
-               <div className="absolute inset-0 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-               <div className="absolute inset-2 border-b-4 border-purple-500 border-solid rounded-full animate-spin reverse"></div>
+               <div className={`absolute inset-0 border-t-4 border-solid rounded-full animate-spin ${currentMode === 'fast' ? 'border-amber-500' : 'border-blue-500'}`}></div>
+               <div className={`absolute inset-2 border-b-4 border-solid rounded-full animate-spin reverse ${currentMode === 'fast' ? 'border-orange-500' : 'border-purple-500'}`}></div>
             </div>
-            <h3 className="text-2xl font-medium text-slate-200">正在扫描全球网络...</h3>
+            <h3 className="text-2xl font-medium text-slate-200">
+              {currentMode === 'fast' ? '快速扫描中...' : '深度分析中...'}
+            </h3>
             <p className="text-slate-400">正在查询实时来源和历史数据库。</p>
           </div>
         )}
@@ -86,10 +90,16 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="w-full py-6 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm mt-auto">
-        <p className="text-sm text-slate-500 font-medium">
-          &copy; {new Date().getFullYear()} Cyberceratops. All rights reserved.
-        </p>
+      <footer className="w-full py-8 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm mt-auto">
+        <div className="flex flex-col items-center gap-3">
+          <div className="flex items-center gap-2 text-slate-400 opacity-80 hover:opacity-100 transition-opacity">
+            <Zap className="w-4 h-4 text-blue-400" />
+            <span className="text-sm font-medium tracking-wide">Powered by Google Gemini</span>
+          </div>
+          <p className="text-xs text-slate-600 font-medium">
+            &copy; {new Date().getFullYear()} Cyberceratops. All rights reserved.
+          </p>
+        </div>
       </footer>
     </div>
   );

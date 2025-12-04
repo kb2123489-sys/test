@@ -1,3 +1,4 @@
+
 export interface SearchSource {
   uri: string;
   title: string;
@@ -15,6 +16,8 @@ export interface AnalysisResult {
   parsed: ParsedAnalysis;
   sources: SearchSource[];
 }
+
+export type AnalysisMode = 'fast' | 'deep';
 
 export enum LoadingState {
   IDLE = 'IDLE',

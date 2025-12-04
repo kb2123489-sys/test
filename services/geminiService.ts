@@ -1,9 +1,8 @@
 
-import { AnalysisResult } from "../types";
+import { AnalysisResult, AnalysisMode } from "../types";
 
 /**
  * Parses the structured text response into a usable object.
- * This logic remains on the client side to reduce server load/complexity.
  */
 const parseResponse = (text: string): { title: string; summary: string; impacts: string[]; historicalContext: string } => {
   const sections = {
@@ -31,16 +30,12 @@ const parseResponse = (text: string): { title: string; summary: string; impacts:
   return sections;
 };
 
-export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
+export const analyzeEvent = async (query: string, mode: AnalysisMode): Promise<AnalysisResult> => {
   try {
-    // Send the query to our own Cloudflare Function backend.
-    // No API keys are required here.
     const response = await fetch("/api/analyze", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, mode }),
     });
 
     if (!response.ok) {
@@ -49,8 +44,6 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
     }
 
     const data = await response.json();
-    
-    // Client-side parsing of the result
     const parsedData = parseResponse(data.rawText);
 
     return {
@@ -62,5 +55,17 @@ export const analyzeEvent = async (query: string): Promise<AnalysisResult> => {
   } catch (error: any) {
     console.error("Error analyzing event:", error);
     throw error;
+  }
+};
+
+export const getTrendingTopics = async (): Promise<string[]> => {
+  try {
+    const response = await fetch("/api/trending");
+    if (!response.ok) return [];
+    const data = await response.json();
+    return data.topics || [];
+  } catch (error) {
+    console.warn("Failed to fetch trending topics:", error);
+    return [];
   }
 };
