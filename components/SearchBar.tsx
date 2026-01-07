@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search, Sparkles, ArrowRight, Zap, BrainCircuit } from 'lucide-react';
 import { AnalysisMode } from '../types';
@@ -9,45 +9,74 @@ interface SearchBarProps {
   isLoading: boolean;
 }
 
+// 默认热门话题（根据语言）
+const DEFAULT_TOPICS_ZH = [
+  "最近的互联网大瘫痪",
+  "最新 AI 模型发布的影响",
+  "本周网络安全漏洞",
+  "社交媒体新规"
+];
+
+const DEFAULT_TOPICS_EN = [
+  "Recent Internet Outages",
+  "Latest AI Model Releases",
+  "This Week's Cybersecurity Vulnerabilities",
+  "New Social Media Regulations"
+];
+
 export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => {
   const { t, i18n } = useTranslation();
   const [input, setInput] = useState('');
   const [mode, setMode] = useState<AnalysisMode>('deep');
-  
-  // 默认热门话题（根据语言）
-  const getDefaultTopics = () => {
-    if (i18n.language?.startsWith('zh')) {
-      return [
-        "最近的互联网大瘫痪",
-        "最新 AI 模型发布的影响",
-        "本周网络安全漏洞",
-        "社交媒体新规"
-      ];
-    }
-    return [
-      "Recent Internet Outages",
-      "Latest AI Model Releases",
-      "This Week's Cybersecurity Vulnerabilities",
-      "New Social Media Regulations"
-    ];
-  };
+  const [trendingTopics, setTrendingTopics] = useState<string[]>([]);
+  const [isLoadingTopics, setIsLoadingTopics] = useState(false);
 
-  const [trendingTopics, setTrendingTopics] = useState<string[]>(getDefaultTopics());
+  // 获取当前语言的默认话题
+  const getDefaultTopics = useCallback((lang: string) => {
+    return lang.startsWith('zh') ? DEFAULT_TOPICS_ZH : DEFAULT_TOPICS_EN;
+  }, []);
 
-  useEffect(() => {
-    // 当语言变化时更新默认话题
-    setTrendingTopics(getDefaultTopics());
+  // 获取热门话题
+  const fetchTrendingTopics = useCallback(async (lang: string) => {
+    setIsLoadingTopics(true);
+    const langCode = lang.startsWith('zh') ? 'zh' : 'en';
     
-    // 获取实时热门话题
-    const fetchTopics = async () => {
-      const lang = i18n.language?.startsWith('zh') ? 'zh' : 'en';
-      const topics = await getTrendingTopics(lang);
+    // 先设置默认话题
+    setTrendingTopics(getDefaultTopics(lang));
+    
+    try {
+      console.log(`[SearchBar] Fetching trending topics for lang=${langCode}`);
+      const topics = await getTrendingTopics(langCode);
       if (topics && topics.length > 0) {
+        console.log(`[SearchBar] Got ${topics.length} topics:`, topics);
         setTrendingTopics(topics);
       }
+    } catch (error) {
+      console.error('[SearchBar] Failed to fetch trending topics:', error);
+    } finally {
+      setIsLoadingTopics(false);
+    }
+  }, [getDefaultTopics]);
+
+  // 监听语言变化
+  useEffect(() => {
+    const currentLang = i18n.language || 'zh';
+    console.log(`[SearchBar] Language changed to: ${currentLang}`);
+    fetchTrendingTopics(currentLang);
+  }, [i18n.language, fetchTrendingTopics]);
+
+  // 监听 i18n 语言变化事件
+  useEffect(() => {
+    const handleLanguageChanged = (lng: string) => {
+      console.log(`[SearchBar] i18n languageChanged event: ${lng}`);
+      fetchTrendingTopics(lng);
     };
-    fetchTopics();
-  }, [i18n.language]);
+
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, [i18n, fetchTrendingTopics]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,12 +158,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => 
         <span className="text-xs md:text-sm text-slate-500 py-1">{t('searchBar.trendingTopics')}</span>
         {trendingTopics.map((topic, idx) => (
           <button
-            key={`${topic}-${idx}`}
+            key={`${i18n.language}-${topic}-${idx}`}
             onClick={() => {
               setInput(topic);
               onSearch(topic, mode);
             }}
-            disabled={isLoading}
+            disabled={isLoading || isLoadingTopics}
             className="text-xs md:text-sm px-2 md:px-3 py-1 rounded-full bg-slate-800/50 hover:bg-slate-700 border border-slate-700 text-slate-300 transition-colors flex items-center gap-1 md:gap-1.5"
           >
             <Sparkles className="w-2.5 h-2.5 md:w-3 md:h-3 text-yellow-500" />
