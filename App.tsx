@@ -125,7 +125,7 @@ const App: React.FC = () => {
 
       <Header isLoading={status === LoadingState.SEARCHING} />
 
-      <main className="relative container mx-auto px-4 sm:px-6 flex-1 flex items-center justify-center">
+      <main className="relative container mx-auto px-4 sm:px-6 flex-1 flex items-center justify-center overflow-y-auto">
         {status === LoadingState.IDLE && (
           <div className="animate-in fade-in zoom-in duration-700 w-full">
             <SearchBar onSearch={handleSearch} isLoading={false} />
