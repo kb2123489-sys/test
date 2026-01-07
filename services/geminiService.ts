@@ -1,5 +1,5 @@
-
 import { AnalysisResult, AnalysisMode } from "../types";
+import i18n from "../i18n";
 
 /**
  * Parses the structured text response into a usable object.
@@ -30,12 +30,22 @@ const parseResponse = (text: string): { title: string; summary: string; impacts:
   return sections;
 };
 
+/**
+ * 获取当前语言代码
+ */
+const getCurrentLang = (): 'zh' | 'en' => {
+  const lang = i18n.language;
+  return lang?.startsWith('zh') ? 'zh' : 'en';
+};
+
 export const analyzeEvent = async (query: string, mode: AnalysisMode): Promise<AnalysisResult> => {
   try {
+    const lang = getCurrentLang();
+    
     const response = await fetch("/api/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query, mode }),
+      body: JSON.stringify({ query, mode, lang }),
     });
 
     if (!response.ok) {
@@ -58,9 +68,10 @@ export const analyzeEvent = async (query: string, mode: AnalysisMode): Promise<A
   }
 };
 
-export const getTrendingTopics = async (): Promise<string[]> => {
+export const getTrendingTopics = async (lang?: string): Promise<string[]> => {
   try {
-    const response = await fetch("/api/trending");
+    const currentLang = lang || getCurrentLang();
+    const response = await fetch(`/api/trending?lang=${currentLang}`);
     if (!response.ok) return [];
     const data = await response.json();
     return data.topics || [];

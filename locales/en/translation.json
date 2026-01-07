@@ -1,0 +1,90 @@
+{
+  "header": {
+    "title": "NetPulse",
+    "subtitle": "Event Horizon",
+    "realTimeAnalysis": "Real-time Analysis",
+    "searchEnabled": "Search Enhancement Enabled"
+  },
+  "searchBar": {
+    "heroTitle1": "Decoding the Pulse of the",
+    "heroTitle2": "Digital Age",
+    "heroDescription": "Instantly summarize major tech events, analyze their impact, and find historical parallels.",
+    "fastMode": "Quick Mode (Flash)",
+    "deepMode": "Deep Mode (Pro)",
+    "placeholderFast": "Quick analysis (approx. 5 sec)...",
+    "placeholderDeep": "Deep analysis (approx. 15 sec)...",
+    "analyzeButton": "Analyze",
+    "trendingTopics": "Trending:"
+  },
+  "loading": {
+    "fastScanning": "Quick Scanning...",
+    "deepAnalyzing": "Deep Analyzing...",
+    "queryingSource": "Querying real-time sources and historical databases."
+  },
+  "error": {
+    "title": "Analysis Failed",
+    "message": "Unable to analyze this event. The topic may be too niche or there was a connection issue. Please try again later.",
+    "retry": "Retry"
+  },
+  "result": {
+    "analysisComplete": "Analysis Complete",
+    "eventAnalysis": "Event Analysis",
+    "coreImpact": "Key Impacts",
+    "historicalEchoes": "Historical Echoes",
+    "historyRhymes": "History doesn't repeat itself, but it often rhymes",
+    "references": "References",
+    "backToSearch": "← Research Another Event"
+  },
+  "footer": {
+    "poweredBy": "Powered by Google Gemini",
+    "copyright": "© {year} Cyberceratops. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "languageSwitcher": {
+    "zh": "中文",
+    "en": "English"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last Updated: January 7, 2026",
+    "intro": "NetPulse (\"we\", \"us\", or \"our\") values your privacy. This Privacy Policy explains how we collect, use, store, and protect your personal information. By using our service, you agree to the practices described in this policy.",
+    "section1Title": "1. Information We Collect",
+    "section1Content": "We may collect the following types of information:\n\n**Usage Data**: When you use our service, we automatically collect certain information such as your device type, browser type, IP address, access time, and how you interact with the service.\n\n**Query Data**: When you use our analysis feature, the queries you enter are sent to our servers for processing. We do not store these queries in association with your personal identity.\n\n**Cookies and Similar Technologies**: We use cookies and similar technologies to store your preferences, such as language settings, to improve your user experience.",
+    "section2Title": "2. How We Use Your Information",
+    "section2Content": "The information we collect is used for the following purposes:\n\n- To provide, maintain, and improve our service.\n- To respond to your queries and provide analysis results.\n- To analyze service usage so we can improve the user experience.\n- To detect, prevent, and address technical or security issues.",
+    "section3Title": "3. Information Sharing",
+    "section3Content": "We do not sell your personal information. We may share your information in the following circumstances:\n\n- **Service Providers**: We may share information with third-party service providers who help us operate our service (e.g., Tavily API for search enhancement and Google Gemini API for analysis).\n- **Legal Requirements**: We may disclose your information if required by law or to protect our rights.",
+    "section4Title": "4. Data Security",
+    "section4Content": "We implement reasonable technical and organizational measures to protect your information from unauthorized access, loss, or misuse. However, please note that no method of internet transmission or electronic storage is 100% secure.",
+    "section5Title": "5. Your Rights",
+    "section5Content": "Depending on applicable law, you may have the right to access, correct, or delete your personal information. If you wish to exercise these rights, please contact us using the information provided below.",
+    "section6Title": "6. Changes to This Policy",
+    "section6Content": "We may update this Privacy Policy from time to time. If there are any significant changes, we will post the updated policy on this page and update the \"Last Updated\" date.",
+    "section7Title": "7. Contact Us",
+    "section7Content": "If you have any questions about this Privacy Policy, please contact us at:\n\nEmail: privacy@netpulse.example.com",
+    "backToHome": "← Back to Home"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last Updated: January 7, 2026",
+    "intro": "Welcome to NetPulse. Please read these Terms of Service (\"Terms\") carefully. By accessing or using our service, you agree to be bound by these Terms.",
+    "section1Title": "1. Description of Service",
+    "section1Content": "NetPulse is an AI-powered tech event analysis tool. Our service utilizes third-party search engines and large language models to summarize and analyze events queried by users. The analysis results provided are for informational purposes only and do not constitute professional advice.",
+    "section2Title": "2. Eligibility",
+    "section2Content": "You must be at least 13 years old to use this service. If you are using this service on behalf of an organization, you represent that you have the authority to accept these Terms on behalf of that organization.",
+    "section3Title": "3. Acceptable Use",
+    "section3Content": "You agree not to use this service for:\n\n- Any illegal or unauthorized purpose.\n- Distributing malware or conducting any form of cyberattack.\n- Attempting unauthorized access to our systems or other users' accounts.\n- Interfering with or disrupting the normal operation of the service.\n- Generating or spreading misinformation or harmful content.",
+    "section4Title": "4. Intellectual Property",
+    "section4Content": "The service and its original content, features, and design are the exclusive property of Cyberceratops and its licensors, protected by copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, or otherwise exploit our content without our express written permission.",
+    "section5Title": "5. Disclaimer",
+    "section5Content": "The service is provided on an \"as is\" and \"as available\" basis without any warranties, express or implied. We do not guarantee that the service will be uninterrupted, secure, or error-free. Analysis results are generated by AI and may contain inaccuracies or be incomplete. You should use your own judgment and assume the risk of using this information.",
+    "section6Title": "6. Limitation of Liability",
+    "section6Content": "To the maximum extent permitted by applicable law, Cyberceratops and its affiliates, directors, employees, or agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from or related to your use of or inability to use the service.",
+    "section7Title": "7. Changes to Terms",
+    "section7Content": "We reserve the right to modify or replace these Terms at any time. If there are significant changes, we will endeavor to provide at least 30 days' notice. Your continued use of the service constitutes acceptance of the revised Terms.",
+    "section8Title": "8. Contact Us",
+    "section8Content": "If you have any questions about these Terms, please contact us at:\n\nEmail: legal@netpulse.example.com",
+    "backToHome": "← Back to Home"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "header": {
+    "title": "NetPulse",
+    "subtitle": "事件视界",
+    "realTimeAnalysis": "实时分析",
+    "searchEnabled": "搜索增强已启用"
+  },
+  "searchBar": {
+    "heroTitle1": "解读数字时代的",
+    "heroTitle2": "脉搏",
+    "heroDescription": "即时总结重大科技事件，深度分析影响，寻找历史镜像。",
+    "fastMode": "快速模式 (Flash)",
+    "deepMode": "深度模式 (Pro)",
+    "placeholderFast": "快速分析事件 (预计 5秒)...",
+    "placeholderDeep": "深度分析事件 (预计 15秒)...",
+    "analyzeButton": "开始分析",
+    "trendingTopics": "热门话题:"
+  },
+  "loading": {
+    "fastScanning": "快速扫描中...",
+    "deepAnalyzing": "深度分析中...",
+    "queryingSource": "正在查询实时来源和历史数据库。"
+  },
+  "error": {
+    "title": "分析失败",
+    "message": "无法分析该事件。可能事件过于冷门或连接出现问题，请稍后重试。",
+    "retry": "重试"
+  },
+  "result": {
+    "analysisComplete": "分析完成",
+    "eventAnalysis": "事件分析",
+    "coreImpact": "核心影响",
+    "historicalEchoes": "历史回响",
+    "historyRhymes": "历史总是押着相同的韵脚",
+    "references": "参考来源",
+    "backToSearch": "← 研究其他事件"
+  },
+  "footer": {
+    "poweredBy": "Powered by Google Gemini",
+    "copyright": "© {year} Cyberceratops. All rights reserved.",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "使用条款"
+  },
+  "languageSwitcher": {
+    "zh": "中文",
+    "en": "English"
+  },
+  "privacy": {
+    "title": "隐私政策",
+    "lastUpdated": "最后更新日期：2026年1月7日",
+    "intro": "NetPulse（以下简称「我们」）非常重视您的隐私。本隐私政策旨在向您说明我们如何收集、使用、存储和保护您的个人信息。使用我们的服务即表示您同意本政策中描述的做法。",
+    "section1Title": "1. 我们收集的信息",
+    "section1Content": "我们可能会收集以下类型的信息：\n\n**使用数据**：当您使用我们的服务时，我们会自动收集某些信息，例如您的设备类型、浏览器类型、IP 地址、访问时间以及您与服务的交互方式。\n\n**查询数据**：当您使用我们的分析功能时，您输入的查询内容将被发送到我们的服务器进行处理。我们不会将这些查询与您的个人身份信息关联存储。\n\n**Cookie 和类似技术**：我们使用 Cookie 和类似技术来存储您的语言偏好等设置，以改善您的用户体验。",
+    "section2Title": "2. 我们如何使用您的信息",
+    "section2Content": "我们收集的信息用于以下目的：\n\n- 提供、维护和改进我们的服务。\n- 响应您的查询并提供分析结果。\n- 分析服务的使用情况，以便我们改进用户体验。\n- 检测、预防和解决技术问题或安全问题。",
+    "section3Title": "3. 信息共享",
+    "section3Content": "我们不会出售您的个人信息。我们可能会在以下情况下共享您的信息：\n\n- **服务提供商**：我们可能会与帮助我们运营服务的第三方服务提供商共享信息（例如，用于搜索增强的 Tavily API 和用于分析的 Google Gemini API）。\n- **法律要求**：如果法律要求或为了保护我们的权利，我们可能会披露您的信息。",
+    "section4Title": "4. 数据安全",
+    "section4Content": "我们采取合理的技术和组织措施来保护您的信息免遭未经授权的访问、丢失或滥用。但是，请注意，没有任何互联网传输或电子存储方法是 100% 安全的。",
+    "section5Title": "5. 您的权利",
+    "section5Content": "根据适用法律，您可能有权访问、更正或删除您的个人信息。如果您希望行使这些权利，请通过下方提供的联系方式与我们联系。",
+    "section6Title": "6. 本政策的变更",
+    "section6Content": "我们可能会不时更新本隐私政策。如有任何重大变更，我们将在本页面上发布更新后的政策，并更新「最后更新日期」。",
+    "section7Title": "7. 联系我们",
+    "section7Content": "如果您对本隐私政策有任何疑问，请通过以下方式联系我们：\n\n电子邮件：privacy@netpulse.example.com",
+    "backToHome": "← 返回首页"
+  },
+  "terms": {
+    "title": "使用条款",
+    "lastUpdated": "最后更新日期：2026年1月7日",
+    "intro": "欢迎使用 NetPulse。请仔细阅读以下使用条款（以下简称「条款」）。访问或使用我们的服务即表示您同意受这些条款的约束。",
+    "section1Title": "1. 服务说明",
+    "section1Content": "NetPulse 是一款基于人工智能的科技事件分析工具。我们的服务利用第三方搜索引擎和大型语言模型来总结和分析用户查询的事件。服务提供的分析结果仅供参考，不构成专业建议。",
+    "section2Title": "2. 使用资格",
+    "section2Content": "您必须年满 13 周岁才能使用本服务。如果您代表某个组织使用本服务，则表示您有权代表该组织接受这些条款。",
+    "section3Title": "3. 可接受的使用",
+    "section3Content": "您同意不会将本服务用于以下目的：\n\n- 任何非法或未经授权的目的。\n- 传播恶意软件或进行任何形式的网络攻击。\n- 试图未经授权访问我们的系统或其他用户的账户。\n- 干扰或破坏服务的正常运行。\n- 生成或传播虚假信息或有害内容。",
+    "section4Title": "4. 知识产权",
+    "section4Content": "本服务及其原始内容、功能和设计均为 Cyberceratops 及其许可方的专有财产，受版权、商标和其他知识产权法律保护。您不得复制、修改、分发或以其他方式利用我们的内容，除非获得我们的明确书面许可。",
+    "section5Title": "5. 免责声明",
+    "section5Content": "本服务按「现状」和「可用」基础提供，不提供任何明示或暗示的保证。我们不保证服务将不间断、安全或无错误。分析结果由人工智能生成，可能存在不准确或不完整之处。您应自行判断并承担使用这些信息的风险。",
+    "section6Title": "6. 责任限制",
+    "section6Content": "在适用法律允许的最大范围内，Cyberceratops 及其关联方、董事、员工或代理人不对因使用或无法使用本服务而导致的任何间接、附带、特殊、后果性或惩罚性损害承担责任。",
+    "section7Title": "7. 条款变更",
+    "section7Content": "我们保留随时修改或替换这些条款的权利。如有重大变更，我们将尽力提供至少 30 天的通知。继续使用本服务即表示您同意修订后的条款。",
+    "section8Title": "8. 联系我们",
+    "section8Content": "如果您对这些条款有任何疑问，请通过以下方式联系我们：\n\n电子邮件：legal@netpulse.example.com",
+    "backToHome": "← 返回首页"
+  }
+}
