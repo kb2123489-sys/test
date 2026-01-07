@@ -107,9 +107,6 @@ NetPulse/
 | `/api/analyze` | POST | 基于搜索增强分析查询 |
 | `/api/trending` | GET | 获取热门话题（支持 `?lang=zh` 或 `?lang=en`） |
 
-## ⚖️ 许可证
-
-&copy; 2026 Cyberceratops. 保留所有权利。
 
 ## 📧 联系方式
 
