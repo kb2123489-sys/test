@@ -11,8 +11,8 @@
     "heroDescription": "Instantly summarize major tech events, analyze their impact, and find historical parallels.",
     "fastMode": "Quick Mode (Flash)",
     "deepMode": "Deep Mode (Pro)",
-    "placeholderFast": "Quick analysis (approx. 5 sec)...",
-    "placeholderDeep": "Deep analysis (approx. 15 sec)...",
+    "placeholderFast": "Quick analysis (approx. 15 sec)...",
+    "placeholderDeep": "Deep analysis (approx. 60 sec)...",
     "analyzeButton": "Analyze",
     "trendingTopics": "Trending:"
   },

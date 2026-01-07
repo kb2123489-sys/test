@@ -11,8 +11,8 @@
     "heroDescription": "即时总结重大科技事件，深度分析影响，寻找历史镜像。",
     "fastMode": "快速模式 (Flash)",
     "deepMode": "深度模式 (Pro)",
-    "placeholderFast": "快速分析事件 (预计 5秒)...",
-    "placeholderDeep": "深度分析事件 (预计 15秒)...",
+    "placeholderFast": "快速分析事件 (预计 15秒)...",
+    "placeholderDeep": "深度分析事件 (预计 60秒)...",
     "analyzeButton": "开始分析",
     "trendingTopics": "热门话题:"
   },
