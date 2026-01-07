@@ -53,7 +53,7 @@ const App: React.FC = () => {
 
   // 渲染主页面
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-100 selection:bg-blue-500/30 flex flex-col">
+    <div className="h-screen bg-[#0f172a] text-slate-100 selection:bg-blue-500/30 flex flex-col overflow-hidden">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-900/10 blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-900/10 blur-[120px]" />
@@ -61,15 +61,15 @@ const App: React.FC = () => {
 
       <Header />
 
-      <main className="relative container mx-auto px-4 sm:px-6 py-4 md:py-8 flex-grow">
+      <main className="relative container mx-auto px-4 sm:px-6 flex-1 flex items-center justify-center">
         {status === LoadingState.IDLE && (
-          <div className="animate-in fade-in zoom-in duration-700 mt-2 md:mt-4 lg:mt-8">
+          <div className="animate-in fade-in zoom-in duration-700 w-full">
             <SearchBar onSearch={handleSearch} isLoading={false} />
           </div>
         )}
 
         {status === LoadingState.SEARCHING && (
-          <div className="w-full max-w-3xl mx-auto text-center py-12 md:py-20 space-y-4 md:space-y-6 animate-in fade-in duration-500">
+          <div className="w-full max-w-3xl mx-auto text-center space-y-4 md:space-y-6 animate-in fade-in duration-500">
             <div className="relative mx-auto w-16 h-16 md:w-24 md:h-24">
                <div className={`absolute inset-0 border-t-4 border-solid rounded-full animate-spin ${currentMode === 'fast' ? 'border-amber-500' : 'border-blue-500'}`}></div>
                <div className={`absolute inset-2 border-b-4 border-solid rounded-full animate-spin reverse ${currentMode === 'fast' ? 'border-orange-500' : 'border-purple-500'}`}></div>
@@ -82,7 +82,7 @@ const App: React.FC = () => {
         )}
 
         {status === LoadingState.ERROR && (
-          <div className="w-full max-w-2xl mx-auto text-center animate-in shake duration-300 mt-6 md:mt-10 px-4">
+          <div className="w-full max-w-2xl mx-auto text-center animate-in shake duration-300 px-4">
             <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-full bg-red-500/10 text-red-500 mb-4 md:mb-6">
               <AlertCircle className="w-6 h-6 md:w-8 md:h-8" />
             </div>
@@ -98,7 +98,7 @@ const App: React.FC = () => {
         )}
 
         {status === LoadingState.COMPLETE && result && (
-          <div className="space-y-6 md:space-y-8 lg:space-y-12">
+          <div className="w-full space-y-6 md:space-y-8 lg:space-y-12 overflow-y-auto max-h-full py-4">
              <div className="flex justify-center">
                <button 
                   onClick={() => setStatus(LoadingState.IDLE)}
@@ -113,8 +113,8 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-4 md:py-6 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm mt-auto">
-        <div className="flex flex-col items-center gap-3 md:gap-4">
+      <footer className="w-full py-3 md:py-4 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm shrink-0">
+        <div className="flex flex-col items-center gap-2 md:gap-3">
           <div className="flex items-center gap-2 text-slate-400 opacity-80 hover:opacity-100 transition-opacity">
             <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-blue-400" />
             <span className="text-xs md:text-sm font-medium tracking-wide">{t('footer.poweredBy')}</span>
