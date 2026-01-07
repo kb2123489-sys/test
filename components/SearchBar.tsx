@@ -89,7 +89,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => 
         <span className="block sm:inline">{t('searchBar.heroTitle1')}</span>{' '}
         <span className="gradient-text whitespace-nowrap">{t('searchBar.heroTitle2')}</span>
       </h2>
-      <p className="text-slate-400 mb-6 md:mb-8 text-base md:text-lg px-4 whitespace-nowrap">
+      <p className="text-slate-400 mb-6 md:mb-8 text-sm sm:text-base md:text-lg px-4">
         {t('searchBar.heroDescription')}
       </p>
 
