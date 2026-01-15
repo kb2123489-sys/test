@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Header } from './components/Header';
 import { SearchBar } from './components/SearchBar';
 import { ResultView } from './components/ResultView';
 import { PrivacyPolicy } from './components/PrivacyPolicy';
 import { TermsOfService } from './components/TermsOfService';
+import { ShareButton } from './components/ShareButton';
+import { ShareModal } from './components/ShareModal';
+import { SharedView } from './components/SharedView';
 import { analyzeEvent } from './services/geminiService';
 import { AnalysisResult, LoadingState, AnalysisMode } from './types';
-import { AlertCircle, Zap, ArrowLeft } from 'lucide-react';
+import { 
+  isShareUrl, 
+  getShareDataFromCurrentUrl, 
+  SharedAnalysisData 
+} from './utils/shareUtils';
+import { AlertCircle, Zap, ArrowLeft, Share2, Home } from 'lucide-react';
 
-type PageView = 'home' | 'privacy' | 'terms';
+type PageView = 'home' | 'privacy' | 'terms' | 'shared' | 'shared-error';
 
 const App: React.FC = () => {
   const { t } = useTranslation();
@@ -18,12 +26,53 @@ const App: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [currentMode, setCurrentMode] = useState<AnalysisMode>('deep');
   const [currentPage, setCurrentPage] = useState<PageView>('home');
+  const [currentQuery, setCurrentQuery] = useState<string>('');
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [sharedData, setSharedData] = useState<SharedAnalysisData | null>(null);
+
+  // Handle URL hash changes for share links
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (isShareUrl()) {
+        const data = getShareDataFromCurrentUrl();
+        if (data) {
+          setSharedData(data);
+          setCurrentPage('shared');
+        } else {
+          setCurrentPage('shared-error');
+        }
+      } else if (window.location.hash === '' || window.location.hash === '#/') {
+        // Only reset to home if we were on a shared page
+        if (currentPage === 'shared' || currentPage === 'shared-error') {
+          setCurrentPage('home');
+          setSharedData(null);
+        }
+      }
+    };
+
+    // Check on initial load
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [currentPage]);
+
+  // Navigate to home and clear hash
+  const navigateToHome = () => {
+    window.location.hash = '';
+    setCurrentPage('home');
+    setSharedData(null);
+    setStatus(LoadingState.IDLE);
+    window.scrollTo(0, 0);
+  };
 
   const handleSearch = async (query: string, mode: AnalysisMode) => {
     setStatus(LoadingState.SEARCHING);
     setErrorMsg('');
     setResult(null);
     setCurrentMode(mode);
+    setCurrentQuery(query);
 
     try {
       const data = await analyzeEvent(query, mode);
@@ -46,6 +95,61 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
+  // Render shared view error page
+  if (currentPage === 'shared-error') {
+    return (
+      <div className="min-h-screen bg-[#0f172a] text-slate-100 selection:bg-blue-500/30 flex flex-col">
+        {/* Background effects */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-900/10 blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-900/10 blur-[120px]" />
+        </div>
+
+        <main className="relative container mx-auto px-4 sm:px-6 flex-1 flex items-center justify-center">
+          <div className="w-full max-w-md mx-auto text-center animate-in fade-in duration-500">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-500/10 text-red-400 mb-6">
+              <Share2 className="w-8 h-8" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-3">
+              {t('sharedView.errorTitle')}
+            </h2>
+            <p className="text-slate-400 mb-8">
+              {t('sharedView.errorDescription')}
+            </p>
+            <button
+              onClick={navigateToHome}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              {t('sharedView.backToHome')}
+            </button>
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="w-full py-3 md:py-4 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm">
+          <p className="text-[10px] md:text-xs text-slate-600 font-medium">
+            {t('footer.copyright', { year: new Date().getFullYear() })}
+          </p>
+        </footer>
+      </div>
+    );
+  }
+
+  // Render shared view page
+  if (currentPage === 'shared' && sharedData) {
+    return (
+      <SharedView 
+        sharedData={sharedData} 
+        onStartNewAnalysis={navigateToHome} 
+      />
+    );
+  }
+
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
+
   // 渲染隐私政策页面
   if (currentPage === 'privacy') {
     return <PrivacyPolicy onBack={() => navigateTo('home')} />;
@@ -66,9 +170,9 @@ const App: React.FC = () => {
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-900/10 blur-[120px]" />
         </div>
 
-        {/* 返回按钮 */}
+        {/* 返回按钮和分享按钮 */}
         <div className="sticky top-0 z-20 bg-[#0f172a]/80 backdrop-blur-sm border-b border-slate-800/50">
-          <div className="container mx-auto px-4 sm:px-6 py-3">
+          <div className="container mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
             <button 
               onClick={handleBackToSearch}
               className="text-xs md:text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-800/50"
@@ -76,6 +180,11 @@ const App: React.FC = () => {
               <ArrowLeft className="w-4 h-4" />
               {t('result.backToSearch')}
             </button>
+            <ShareButton
+              analysisResult={result}
+              query={currentQuery}
+              onShareClick={handleShareClick}
+            />
           </div>
         </div>
 
@@ -83,6 +192,14 @@ const App: React.FC = () => {
         <main className="relative container mx-auto px-4 sm:px-6 py-6">
           <ResultView data={result} />
         </main>
+
+        {/* Share Modal */}
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          analysisResult={result}
+          query={currentQuery}
+        />
 
         {/* Footer */}
         <footer className="w-full py-3 md:py-4 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm">

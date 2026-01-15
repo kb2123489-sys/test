@@ -35,6 +35,36 @@
     "references": "References",
     "backToSearch": "← Research Another Event"
   },
+  "share": {
+    "button": "Share",
+    "modalTitle": "Share Analysis",
+    "close": "Close",
+    "includeQuery": "Include search query",
+    "includeSources": "Include references",
+    "customTitle": "Custom title (optional)",
+    "customTitlePlaceholder": "Enter a custom title...",
+    "preview": "Preview",
+    "previewLabel": "Recipients will see:",
+    "sharedAnalysis": "Shared Analysis",
+    "sourcesCount": "{{count}} references included",
+    "copyLink": "Copy Link",
+    "copied": "Copied to clipboard!",
+    "copyFailed": "Copy failed",
+    "copyError": "Unable to copy to clipboard. Please copy manually.",
+    "generateError": "Unable to generate share link.",
+    "rateLimitError": "Too many share links generated. Please try again later."
+  },
+  "sharedView": {
+    "badge": "Shared Analysis",
+    "startNew": "Start New Analysis",
+    "queryLabel": "Analysis Topic",
+    "ctaTitle": "Want to analyze your own topic?",
+    "ctaDescription": "NetPulse helps you instantly summarize tech events, analyze their impact, and discover historical echoes.",
+    "startNewButton": "Start New Analysis",
+    "errorTitle": "Invalid Share Link",
+    "errorDescription": "This share link is invalid or has expired. The data may be corrupted.",
+    "backToHome": "Back to Home"
+  },
   "footer": {
     "poweredBy": "Powered by Google Gemini",
     "copyright": "© {{year}} Cyberceratops. All rights reserved.",

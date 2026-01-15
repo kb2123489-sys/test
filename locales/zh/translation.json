@@ -35,6 +35,36 @@
     "references": "参考来源",
     "backToSearch": "← 研究其他事件"
   },
+  "share": {
+    "button": "分享",
+    "modalTitle": "分享分析结果",
+    "close": "关闭",
+    "includeQuery": "包含搜索查询",
+    "includeSources": "包含参考来源",
+    "customTitle": "自定义标题（可选）",
+    "customTitlePlaceholder": "输入自定义标题...",
+    "preview": "预览",
+    "previewLabel": "接收者将看到：",
+    "sharedAnalysis": "分享的分析",
+    "sourcesCount": "包含 {{count}} 个参考来源",
+    "copyLink": "复制链接",
+    "copied": "已复制到剪贴板！",
+    "copyFailed": "复制失败",
+    "copyError": "无法复制到剪贴板，请手动复制。",
+    "generateError": "无法生成分享链接。",
+    "rateLimitError": "生成分享链接过于频繁，请稍后再试。"
+  },
+  "sharedView": {
+    "badge": "分享的分析",
+    "startNew": "开始新分析",
+    "queryLabel": "分析主题",
+    "ctaTitle": "想分析自己的话题？",
+    "ctaDescription": "NetPulse 帮助您即时总结科技事件，分析其影响，并发现历史回响。",
+    "startNewButton": "开始新分析",
+    "errorTitle": "无效的分享链接",
+    "errorDescription": "此分享链接无效或已过期。数据可能已损坏。",
+    "backToHome": "返回首页"
+  },
   "footer": {
     "poweredBy": "Powered by Google Gemini",
     "copyright": "© {{year}} Cyberceratops. All rights reserved.",
