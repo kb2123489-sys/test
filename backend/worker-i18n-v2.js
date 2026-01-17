@@ -41,9 +41,9 @@ const PROMPTS = {
     trendingPrompt: (context) => `基于以下新闻标题：
 ${context}
 
-提炼4个极简的热门话题标题。要求：
-- 每个标题最多6个汉字
-- 简洁有力，一目了然
+提炼4个热门话题标题。要求：
+- 每个标题8-12个汉字
+- 简洁明了，让人一看就懂主题
 - 使用简体中文
 - 仅输出4个标题，每行一个，不要编号或标点`
   },
@@ -68,9 +68,9 @@ Strictly follow the format below. Do not use Markdown headings (#). All content 
     trendingPrompt: (context) => `Based on these news titles:
 ${context}
 
-Extract 4 ultra-short trending topic titles. Requirements:
-- Maximum 3-4 words each
-- Punchy and clear
+Extract 4 trending topic titles. Requirements:
+- 4-6 words each
+- Clear and meaningful, easy to understand
 - English only
 - Output ONLY 4 titles, one per line, no numbering or punctuation`
   }
