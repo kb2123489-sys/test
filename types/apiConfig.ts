@@ -2,7 +2,7 @@
 export type SearchProvider = 'tavily' | 'exa';
 
 // 大模型服务提供商
-export type LLMProvider = 'gemini' | 'deepseek' | 'openai' | 'claude';
+export type LLMProvider = 'gemini' | 'deepseek' | 'openai' | 'claude' | 'custom';
 
 // API 配置接口
 export interface APIConfig {
@@ -14,7 +14,8 @@ export interface APIConfig {
   llmProvider: LLMProvider;
   llmApiKey: string;
   llmEndpoint: string; // 自定义端点，支持中转站
-  llmModel: string; // 自定义模型名称
+  llmModelFast: string; // 快速模式模型
+  llmModelDeep: string; // 深度模式模型
 
   // 是否启用自定义配置
   enabled: boolean;
@@ -27,7 +28,8 @@ export const DEFAULT_API_CONFIG: APIConfig = {
   llmProvider: 'gemini',
   llmApiKey: '',
   llmEndpoint: '', // 空表示使用官方端点
-  llmModel: '', // 空表示使用默认模型
+  llmModelFast: '', // 空表示使用默认模型
+  llmModelDeep: '', // 空表示使用默认模型
   enabled: false,
 };
 
@@ -64,26 +66,32 @@ export const PROVIDER_INFO = {
     gemini: {
       name: 'Google Gemini',
       endpoint: 'https://generativelanguage.googleapis.com/v1beta',
-      models: { fast: 'gemini-1.5-flash', deep: 'gemini-1.5-pro' },
+      models: { fast: 'gemini-3.0-flash', deep: 'gemini-3.0-pro' },
       docsUrl: 'https://ai.google.dev',
     },
     deepseek: {
       name: 'DeepSeek',
       endpoint: 'https://api.deepseek.com/v1',
-      models: { fast: 'deepseek-chat', deep: 'deepseek-chat' },
+      models: { fast: 'deepseek-chat', deep: 'deepseek-reasoner' },
       docsUrl: 'https://platform.deepseek.com',
     },
     openai: {
       name: 'OpenAI',
       endpoint: 'https://api.openai.com/v1',
-      models: { fast: 'gpt-4o-mini', deep: 'gpt-4o' },
+      models: { fast: 'gpt-5.2-mini', deep: 'gpt-5.2' },
       docsUrl: 'https://platform.openai.com',
     },
     claude: {
       name: 'Anthropic Claude',
       endpoint: 'https://api.anthropic.com/v1',
-      models: { fast: 'claude-3-haiku-20240307', deep: 'claude-3-5-sonnet-20241022' },
+      models: { fast: 'claude-4-5-haiku-latest', deep: 'claude-4-5-sonnet-latest' },
       docsUrl: 'https://console.anthropic.com',
+    },
+    custom: {
+      name: '自定义',
+      endpoint: '',
+      models: { fast: '', deep: '' },
+      docsUrl: '',
     },
   } as Record<LLMProvider, LLMProviderInfo>,
 };

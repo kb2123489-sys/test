@@ -19,8 +19,9 @@
 - **双语支持**：完整的国际化 (i18n) 支持，中英文界面自由切换，API 响应也会根据语言自动调整。
 - **搜索增强 (RAG)**：集成 **Tavily API** 获取实时、准确的网络上下文，大幅降低大模型幻觉。
 - **双模式分析**：
-  - **快速模式** (~15秒)：使用 Gemini 2.5 Flash 快速扫描
-  - **深度模式** (~60秒)：使用 Gemini 3 Pro 深度分析
+  - **快速模式** (~15秒)：使用 Gemini 3.0 Flash 快速扫描
+  - **深度模式** (~60秒)：使用 Gemini 3.0 Pro 深度分析
+- **自定义 API Key**：高级用户可配置自己的搜索服务（Tavily/Exa）和大模型服务（Gemini/DeepSeek/OpenAI/Claude 或自定义端点）的 API Key。
 - **历史回响**：独创功能，自动将当前事件与历史上的类似事件进行对比，寻找历史的韵脚。
 - **分享功能**：生成短链接分享分析结果，数据存储在 Cloudflare KV 中，30 天有效期。
 - **安全架构**：API Key 存储在 Cloudflare Worker 的加密环境变量中。前端仅与自建后端 (`/api/analyze`) 通信。
@@ -34,7 +35,7 @@
 | **前端** | React 19, TypeScript, Vite, i18next |
 | **后端** | Cloudflare Workers (JavaScript) |
 | **样式** | Tailwind CSS, Lucide React (图标) |
-| **AI 模型** | Google Gemini 3 Pro Preview / Gemini 2.5 Flash |
+| **AI 模型** | Google Gemini 3.0 Pro / Gemini 3.0 Flash |
 | **搜索引擎** | Tavily AI Search API |
 | **存储** | Cloudflare KV (用于分享链接) |
 
@@ -54,13 +55,18 @@ NetPulse/
 │   ├── ShareButton.tsx     # 分享按钮组件
 │   ├── ShareModal.tsx      # 分享配置弹窗
 │   ├── SharedView.tsx      # 分享视图页面
+│   ├── SettingsPanel.tsx   # 自定义 API Key 设置面板
 │   ├── LanguageSwitcher.tsx# 响应式语言切换组件
 │   ├── PrivacyPolicy.tsx   # 隐私政策页面
 │   └── TermsOfService.tsx  # 使用条款页面
 ├── utils/
-│   └── shareUtils.ts       # 分享链接编解码工具
+│   ├── shareUtils.ts       # 分享链接编解码工具
+│   └── apiConfigStore.ts   # API 配置存储
 ├── services/
-│   └── geminiService.ts    # API 服务层
+│   ├── geminiService.ts    # API 服务层
+│   └── directApiService.ts # 自定义 Key 直接调用服务
+├── types/
+│   └── apiConfig.ts        # API 配置类型定义
 └── backend/
     └── worker-i18n-v2.js   # Cloudflare Worker 后端（最新版）
 ```

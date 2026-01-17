@@ -274,6 +274,7 @@ const llmAdapters: Record<LLMProvider, LLMAdapter> = {
   deepseek: createOpenAICompatibleAdapter(PROVIDER_INFO.llm.deepseek.endpoint),
   openai: createOpenAICompatibleAdapter(PROVIDER_INFO.llm.openai.endpoint),
   claude: claudeAdapter,
+  custom: createOpenAICompatibleAdapter(''), // Will use endpoint from config
 };
 
 // Get LLM adapter by provider
@@ -398,7 +399,8 @@ export const analyzeWithCustomKeys = async (
   // Step 3: Get LLM response using the configured LLM provider
   const llmAdapter = getLLMAdapter(config.llmProvider);
   const modelKey = mode === 'deep' ? 'deep' : 'fast';
-  const model = config.llmModel || PROVIDER_INFO.llm[config.llmProvider].models[modelKey];
+  const model = (mode === 'deep' ? config.llmModelDeep : config.llmModelFast) || 
+    (config.llmProvider !== 'custom' ? PROVIDER_INFO.llm[config.llmProvider].models[modelKey] : 'gpt-3.5-turbo');
   const endpoint = config.llmEndpoint || undefined;
 
   const rawText = await llmAdapter.chat(prompt, config.llmApiKey, model, endpoint);

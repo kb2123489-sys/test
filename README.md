@@ -20,8 +20,9 @@
 - **Bilingual Support**: Full internationalization (i18n) with Chinese and English interfaces, including language-aware API responses.
 - **Search Grounding**: Utilizes **Tavily API** to fetch real-time, accurate context from the web, reducing hallucinations.
 - **Dual Analysis Modes**: 
-  - **Quick Mode** (~15s): Fast scanning with Gemini 2.5 Flash
-  - **Deep Mode** (~60s): Comprehensive analysis with Gemini 3 Pro
+  - **Quick Mode** (~15s): Fast scanning with Gemini 3.0 Flash
+  - **Deep Mode** (~60s): Comprehensive analysis with Gemini 3.0 Pro
+- **Custom API Keys**: Advanced users can configure their own API keys for search (Tavily/Exa) and LLM services (Gemini/DeepSeek/OpenAI/Claude or custom endpoints).
 - **Historical Echoes**: Unique feature that compares current events with historical precedents to find patterns.
 - **Share Analysis**: Generate short links to share analysis results with others. Data stored in Cloudflare KV with 30-day expiration.
 - **Secure Architecture**: API Keys are stored in Cloudflare Worker Secrets. The frontend only communicates with your own backend (`/api/analyze`).
@@ -35,7 +36,7 @@
 | **Frontend** | React 19, TypeScript, Vite, i18next |
 | **Backend** | Cloudflare Workers (JavaScript) |
 | **Styling** | Tailwind CSS, Lucide React (Icons) |
-| **AI Model** | Google Gemini 3 Pro Preview / Gemini 2.5 Flash |
+| **AI Model** | Google Gemini 3.0 Pro / Gemini 3.0 Flash |
 | **Search** | Tavily AI Search API |
 | **Storage** | Cloudflare KV (for share links) |
 
@@ -55,13 +56,18 @@ NetPulse/
 │   ├── ShareButton.tsx     # Share button component
 │   ├── ShareModal.tsx      # Share configuration modal
 │   ├── SharedView.tsx      # Shared analysis view page
+│   ├── SettingsPanel.tsx   # Custom API keys settings panel
 │   ├── LanguageSwitcher.tsx# Responsive language toggle
 │   ├── PrivacyPolicy.tsx   # Privacy policy page
 │   └── TermsOfService.tsx  # Terms of service page
 ├── utils/
-│   └── shareUtils.ts       # Share link encoding/decoding utilities
+│   ├── shareUtils.ts       # Share link encoding/decoding utilities
+│   └── apiConfigStore.ts   # API configuration storage
 ├── services/
-│   └── geminiService.ts    # API service layer
+│   ├── geminiService.ts    # API service layer
+│   └── directApiService.ts # Direct API calls for custom keys
+├── types/
+│   └── apiConfig.ts        # API configuration types
 └── backend/
     └── worker-i18n-v2.js   # Cloudflare Worker backend (latest)
 ```
