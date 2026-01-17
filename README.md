@@ -23,6 +23,7 @@
   - **Quick Mode** (~15s): Fast scanning with Gemini 2.5 Flash
   - **Deep Mode** (~60s): Comprehensive analysis with Gemini 3 Pro
 - **Historical Echoes**: Unique feature that compares current events with historical precedents to find patterns.
+- **Share Analysis**: Generate short links to share analysis results with others. Data stored in Cloudflare KV with 30-day expiration.
 - **Secure Architecture**: API Keys are stored in Cloudflare Worker Secrets. The frontend only communicates with your own backend (`/api/analyze`).
 - **Responsive UI**: A modern, glassmorphism-inspired interface built with **Tailwind CSS**, optimized for mobile and desktop.
 - **Dynamic Trending Topics**: Real-time trending topics fetched and cached by language.
@@ -36,6 +37,7 @@
 | **Styling** | Tailwind CSS, Lucide React (Icons) |
 | **AI Model** | Google Gemini 3 Pro Preview / Gemini 2.5 Flash |
 | **Search** | Tavily AI Search API |
+| **Storage** | Cloudflare KV (for share links) |
 
 ## 📁 Project Structure
 
@@ -50,9 +52,14 @@ NetPulse/
 │   ├── Header.tsx          # Header with language switcher
 │   ├── SearchBar.tsx       # Search interface with trending topics
 │   ├── ResultView.tsx      # Analysis result display
+│   ├── ShareButton.tsx     # Share button component
+│   ├── ShareModal.tsx      # Share configuration modal
+│   ├── SharedView.tsx      # Shared analysis view page
 │   ├── LanguageSwitcher.tsx# Responsive language toggle
 │   ├── PrivacyPolicy.tsx   # Privacy policy page
 │   └── TermsOfService.tsx  # Terms of service page
+├── utils/
+│   └── shareUtils.ts       # Share link encoding/decoding utilities
 ├── services/
 │   └── geminiService.ts    # API service layer
 └── backend/
@@ -88,22 +95,24 @@ NetPulse/
 
 ## 📦 Deployment
 
-### Frontend (Cloudflare Pages)
+This project uses a unified deployment approach via **Cloudflare Workers with Static Assets**. Both frontend and backend are deployed together.
 
-The frontend auto-deploys via GitHub integration. Simply push to the `main` branch.
+### Automated Deployment
 
-### Backend (Cloudflare Workers)
-
-1. Go to **Cloudflare Dashboard** → **Workers & Pages** → Your Worker
-2. Click **Edit Code** or **Quick Edit**
-3. **Replace all code** with the content of `backend/worker-i18n-v2.js`
-4. Click **Save and Deploy**
+1. Connect your GitHub repository to Cloudflare Workers & Pages
+2. Push to the `main` branch to trigger automatic build and deployment
+3. Cloudflare will build the frontend (`npm run build`) and deploy it along with the Worker backend
 
 ### Environment Variables
 
-Add the following secrets in Cloudflare Worker settings:
+Add the following secrets in Cloudflare Worker settings (**Settings** → **Variables and Secrets**):
 - `GEMINI_API_KEY`: Your Gemini/OpenAI-proxy API Key
 - `TAVILY_API_KEY`: Your Tavily API Key
+
+### KV Namespace (for Share Links)
+
+1. Create a KV namespace named `SHARE_DATA` in Cloudflare Dashboard (**Storage & Databases** → **KV**)
+2. The binding is already configured in `wrangler.json` - just update the `id` with your KV namespace ID
 
 ## 🌐 API Endpoints
 
@@ -111,6 +120,8 @@ Add the following secrets in Cloudflare Worker settings:
 |----------|--------|-------------|
 | `/api/analyze` | POST | Analyze a query with search grounding |
 | `/api/trending` | GET | Get trending topics (supports `?lang=zh` or `?lang=en`) |
+| `/api/share` | POST | Create a share link (stores data in KV) |
+| `/api/share/:id` | GET | Retrieve shared analysis data by ID |
 
 
 ## 📧 Contact
