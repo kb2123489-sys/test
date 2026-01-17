@@ -83,13 +83,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading }) => 
     if (input.trim()) onSearch(input, mode);
   };
 
+  const isZh = i18n.language?.startsWith('zh');
+
   return (
     <div className="w-full max-w-3xl mx-auto text-center">
-      <h2 className="text-xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 tracking-tight px-2">
-        <span className="block sm:inline">{t('searchBar.heroTitle1')}</span>{' '}
+      <h2 className={`text-xl sm:text-3xl md:text-5xl font-bold mb-4 md:mb-6 tracking-tight px-2 ${isZh ? 'whitespace-nowrap' : ''}`}>
+        <span className={isZh ? '' : 'block sm:inline'}>{t('searchBar.heroTitle1')}</span>{' '}
         <span className="gradient-text whitespace-nowrap">{t('searchBar.heroTitle2')}</span>
       </h2>
-      <p className="text-slate-400 mb-6 md:mb-8 text-sm sm:text-base md:text-lg px-4">
+      <p className={`text-slate-400 mb-6 md:mb-8 text-sm sm:text-base md:text-lg px-4 ${isZh ? 'whitespace-nowrap' : 'md:whitespace-nowrap'}`}>
         {t('searchBar.heroDescription')}
       </p>
 
