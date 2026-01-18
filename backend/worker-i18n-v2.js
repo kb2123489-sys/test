@@ -364,8 +364,8 @@ async function handleTrending(request, env) {
     try {
       // 根据语言使用不同的搜索关键词，确保聚焦科技领域
       const searchQuery = lang === 'zh' 
-        ? "AI人工智能 科技新闻 技术突破 互联网"
-        : "AI artificial intelligence technology breakthrough startup";
+        ? "AI人工智能 科技新闻 技术突破 互联网 最新"
+        : "AI artificial intelligence technology news breakthrough latest";
       
       const tavilyResponse = await safeFetch("https://api.tavily.com/search", {
         method: "POST",
@@ -374,9 +374,8 @@ async function handleTrending(request, env) {
           api_key: tavilyKey,
           query: searchQuery,
           topic: "news",
-          days: 1,
-          max_results: 8,
-          include_domains: ["techcrunch.com", "theverge.com", "wired.com", "arstechnica.com", "36kr.com", "ithome.com", "cnbeta.com", "engadget.com", "zdnet.com", "venturebeat.com"]
+          days: 3,
+          max_results: 10
         })
       }, 1); // 只重试 1 次
       
