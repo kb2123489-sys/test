@@ -282,7 +282,7 @@ ${promptTemplate.format}
 `;
     
     // --- Step 3: 调用 Gemini API ---
-    const proxyBaseUrl = "https://api.zxvmax.com";
+    const proxyBaseUrl = env.GEMINI_PROXY_URL || "https://generativelanguage.googleapis.com";
     const geminiUrl = `${proxyBaseUrl}/v1/chat/completions`;
     
     const geminiResponse = await fetch(geminiUrl, {
@@ -396,7 +396,7 @@ async function handleTrending(request, env) {
     }
     
     // 根据语言生成话题
-    const proxyBaseUrl = "https://api.zxvmax.com";
+    const proxyBaseUrl = env.GEMINI_PROXY_URL || "https://generativelanguage.googleapis.com";
     const promptTemplate = PROMPTS[lang];
     
     const geminiResponse = await fetch(`${proxyBaseUrl}/v1/chat/completions`, {
