@@ -112,6 +112,9 @@ NetPulse/
 
 在 Cloudflare Worker 设置中添加以下密钥（**设置** → **变量和机密**）：
 - `GEMINI_API_KEY`: 你的 Gemini 或 OpenAI 中转 API Key
+- `GEMINI_PROXY_URL`: Gemini API 代理地址（可选，默认使用 Google 官方端点）
+  - 如果使用中转服务，填写中转站地址，如 `https://api.example.com`
+  - 留空则使用 Google 官方端点 `https://generativelanguage.googleapis.com`
 - `TAVILY_API_KEY_1`: 你的第一个 Tavily API Key
 - `TAVILY_API_KEY_2`: 你的第二个 Tavily API Key（可选）
 - `TAVILY_API_KEY_3`: 你的第三个 Tavily API Key（可选）

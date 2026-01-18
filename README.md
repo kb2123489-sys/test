@@ -113,6 +113,9 @@ This project uses a unified deployment approach via **Cloudflare Workers with St
 
 Add the following secrets in Cloudflare Worker settings (**Settings** → **Variables and Secrets**):
 - `GEMINI_API_KEY`: Your Gemini/OpenAI-proxy API Key
+- `GEMINI_PROXY_URL`: Gemini API proxy URL (optional, defaults to Google's official endpoint)
+  - If using a proxy service, enter the proxy URL, e.g., `https://api.example.com`
+  - Leave empty to use Google's official endpoint `https://generativelanguage.googleapis.com`
 - `TAVILY_API_KEY_1`: Your first Tavily API Key
 - `TAVILY_API_KEY_2`: Your second Tavily API Key (optional)
 - `TAVILY_API_KEY_3`: Your third Tavily API Key (optional)

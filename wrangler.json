@@ -9,6 +9,9 @@
   "observability": {
     "enabled": true
   },
+  "vars": {
+    "GEMINI_PROXY_URL": ""
+  },
   "kv_namespaces": [
     {
       "binding": "SHARE_DATA",
