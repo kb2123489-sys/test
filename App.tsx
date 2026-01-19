@@ -318,34 +318,7 @@ const App: React.FC = () => {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="w-full py-3 md:py-4 text-center relative z-10 border-t border-slate-800/50 bg-slate-900/50 backdrop-blur-sm shrink-0">
-        <div className="flex flex-col items-center gap-2 md:gap-3">
-          <div className="flex items-center gap-2 text-slate-400 opacity-80 hover:opacity-100 transition-opacity">
-            <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-blue-400" />
-            <span className="text-xs md:text-sm font-medium tracking-wide">{t('footer.poweredBy')}</span>
-          </div>
-          <p className="text-[10px] md:text-xs text-slate-600 font-medium">
-            {t('footer.copyright', { year: new Date().getFullYear() })}
-          </p>
-          {/* 隐私政策和使用条款链接 */}
-          <div className="flex items-center gap-3 md:gap-4 text-[10px] md:text-xs">
-            <button 
-              onClick={() => navigateTo('privacy')}
-              className="text-slate-500 hover:text-slate-300 transition-colors"
-            >
-              {t('footer.privacyPolicy')}
-            </button>
-            <span className="text-slate-700">•</span>
-            <button 
-              onClick={() => navigateTo('terms')}
-              className="text-slate-500 hover:text-slate-300 transition-colors"
-            >
-              {t('footer.termsOfService')}
-            </button>
-          </div>
-        </div>
-      </footer>
+
     </div>
   );
 };
