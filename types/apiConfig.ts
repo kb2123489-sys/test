@@ -24,13 +24,13 @@ export interface APIConfig {
 // 默认配置
 export const DEFAULT_API_CONFIG: APIConfig = {
   searchProvider: 'tavily',
-  searchApiKey: '',
-  llmProvider: 'gemini',
-  llmApiKey: '',
-  llmEndpoint: '', // 空表示使用官方端点
-  llmModelFast: '', // 空表示使用默认模型
-  llmModelDeep: '', // 空表示使用默认模型
-  enabled: false,
+  searchApiKey: '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',
+  llmProvider: 'openai',
+  llmApiKey: 'sk-ycvmoyoyzpsdcoivdowxpxetxrfndvxdizrzmaedzxccuegm',
+  llmEndpoint: 'https://api.siliconflow.cn/v1', // 空表示使用官方端点
+  llmModelFast: 'Qwen/Qwen2.5-7B-Instruct', // 空表示使用默认模型
+  llmModelDeep: 'Qwen/Qwen2.5-7B-Instruct', // 空表示使用默认模型
+  enabled: true,
 };
 
 // 搜索提供商信息
