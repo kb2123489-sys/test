@@ -45,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({ isLoading = false }) => {
         </div>
         <div className="w-px h-5 bg-slate-700"></div>
         <LanguageSwitcher />
-        <div className="flex items-center -ml-1">
+        {/* <div className="flex items-center -ml-1">
           <a
             href="https://github.com/EmmaStoneX/NetPulse/"
             target="_blank"
@@ -62,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({ isLoading = false }) => {
           >
             <Settings className="w-5 h-5" />
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* 移动端：汉堡菜单按钮 */}
